@@ -308,6 +308,8 @@ declare namespace Pubnub {
         listenToBrowserNetworkEvents?: boolean;
     }
 
+    type TimeToken = string | number;
+
     interface MessageEvent {
         channel: string;
         subscription: string;
@@ -330,13 +332,16 @@ declare namespace Pubnub {
     type PubnubData = MessageEvent;
 
     interface StatusEvent {
+        error: boolean;
+        statusCode: number;
         category: string; // see Pubnub.Categories
         operation: string; // see Pubnub.Operations
+        errorData: Object;
         affectedChannels: string[];
         subscribedChannels: string[];
         affectedChannelGroups: string[];
-        lastTimetoken: number | string;
-        currentTimetoken: number | string;
+        lastTimetoken: TimeToken;
+        currentTimetoken: TimeToken;
     }
 
     interface PresenceEvent {
@@ -454,22 +459,22 @@ declare namespace Pubnub {
         stringifiedTimeToken?: boolean;
         includeTimetoken?: boolean;
         reverse?: boolean;
-        start?: string | number; // timetoken
-        end?: string | number; // timetoken
+        start?: TimeToken;
+        end?: TimeToken;
         includeMeta?: boolean;
     }
 
     interface HistoryMessage {
         entry: any;
-        timetoken?: string | number;
+        timetoken?: TimeToken;
         meta?: {
             [key: string]: string;
         };
     }
 
     interface HistoryResponse {
-        endTimeToken?: string | number;
-        startTimeToken?: string | number;
+        endTimeToken?: TimeToken;
+        startTimeToken?: TimeToken;
         messages: HistoryMessage[];
     }
 
@@ -477,8 +482,8 @@ declare namespace Pubnub {
         channels: string[];
         count?: number;
         stringifiedTimeToken?: boolean;
-        start?: string | number; // timetoken
-        end?: string | number; // timetoken
+        start?: TimeToken;
+        end?: TimeToken;
         withMessageActions?: boolean;
         includeMeta?: boolean;
         includeMessageActions?: boolean;
@@ -488,7 +493,7 @@ declare namespace Pubnub {
         channels: {
             [channel: string]: Array<{
                 message: any;
-                timetoken: string | number;
+                timetoken: TimeToken;
                 meta?: {
                     [key: string]: any;
                 };
@@ -496,7 +501,7 @@ declare namespace Pubnub {
                     [type: string]: {
                         [value: string]: Array<{
                             uuid: string;
-                            actionTimetoken: string | number; // timetoken
+                            actionTimetoken: TimeToken;
                         }>;
                     };
                 };
@@ -506,8 +511,8 @@ declare namespace Pubnub {
 
     interface DeleteMessagesParameters {
         channel: string;
-        start?: string | number; // timetoken
-        end?: string | number; // timetoken
+        start?: TimeToken;
+        end?: TimeToken;
     }
 
     interface MessageCountsParameters {
